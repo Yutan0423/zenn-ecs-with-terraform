@@ -1,4 +1,4 @@
-# punch-industry-order infrastructure
+# zenn-ecs-with-terraform infrastructure
 
 ## introduction
 
