@@ -4,7 +4,7 @@ locals {
   region        = "ap-northeast-1" # AWS region
   ecr_name      = "zenn-ecs-with-terraform-api" # ECR repository name
   ecr_image     = "${var.aws_account_id}.dkr.ecr.ap-northeast-1.amazonaws.com/zenn-ecs-with-terraform-api:latest" # ECR image URI
-  ecr_task_role = "arn:aws:iam::${var.aws_account_id}:role/ecsTaskExecutionRole" # ECS task role ARN
+  ecs_task_role = aws_iam_role.ecs_task_execution_role.arn # ECS task role ARN
   ecs_task_cpu = 256 # ECS task CPU
   ecs_task_memory = 512 # ECS task memory
   ecs_service_desired_count = 2 # ECS service desired count
@@ -31,8 +31,8 @@ resource "aws_ecs_task_definition" "zenn_cluster_task" {
   cpu                      = local.ecs_task_cpu
   memory                   = local.ecs_task_memory
   network_mode             = "awsvpc"
-  execution_role_arn       = local.ecr_task_role
-  task_role_arn            = local.ecr_task_role
+  execution_role_arn       = local.ecs_task_role
+  task_role_arn            = local.ecs_task_role
   container_definitions = jsonencode([
     {
       name      = local.ecr_name
